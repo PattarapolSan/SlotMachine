@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Casino Royale</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/8633768cc1.js" crossorigin="anonymous"></script>
+    <link rel="icon" href="sorce/favicon.ico">
+</head>
+<body onload="toggleAudio()">
+    <center><h1 class="neon" id="one">Casino Royale</h1></center>
+    <div id="main">
+        <div id="slot">
+            <div class="spinner" id="i-one"><i class="fa-solid fa-question" ></i></div>
+            <div class="spinner" id="i-two"><i class="fa-solid fa-question" ></i></div>
+            <div class="spinner" id="i-three"><i class="fa-solid fa-question" ></i></div>
+        </div>
+    </div>
+    <div id="bet-sec">
+        <div id="bet-sec-in">
+            <p>Bet</p>
+            <input  value="0" id="bet">
+        </div>
+    </div>
+    <center>
+        <button id="spin"  onclick="doSlot()">$ SPIN $</button>
+    </center>
+    <i class="fa-solid fa-arrows-rotate" id="reset" onclick="reset()"></i>
+</body>
+<script>
+    var set_default = '<i class="fa-solid fa-question" ></i>';
+    var i1 = '<i class="fa-solid fa-7">';
+    var i2 = '<i class="fa-solid fa-dice"></i>';
+    var i3 = '<i class="fa-regular fa-face-grin-tongue-wink"></i>';
+    var i4 = '<i class="fa-solid fa-dollar-sign"></i>';
+    var i5 = '<i class="fa-regular fa-gem"></i>';
+    var icon = [i1, i2, i3, i4, i5];
+    var round = 15;
+    var jackpot = 4;
+    var spin = [new Audio("res/sounds/spin.mp3"),new Audio("res/sounds/spin.mp3"),new Audio("res/sounds/spin.mp3"),new Audio("res/sounds/spin.mp3"),new Audio("res/sounds/spin.mp3"),new Audio("res/sounds/spin.mp3"),new Audio("res/sounds/spin.mp3")];
+    var coin = [new Audio("res/sounds/coin.mp3"),new Audio("res/sounds/coin.mp3"),new Audio("res/sounds/coin.mp3")];
+    var win = new Audio("res/sounds/win.mp3");
+    var lose = new Audio("res/sounds/lose.mp3");
+   
+    function jackpot_var() {
+     x = [[5,10,5],[6, 10, 5]];
+     return x[Math.floor(Math.random()*x.length)];
+    }
+
+    function get_jackpot() {
+        return Math.floor(Math.random() * 15)
+    }
+
+
+    function change() {
+        s1.innerHTML = i1;
+    }
+
+    function reset() {
+        document.getElementById("i-one").innerHTML = set_default;
+        document.getElementById("i-two").innerHTML = set_default;
+        document.getElementById("i-three").innerHTML = set_default;
+    }
+
+    function doSlot() {
+        let bet = document.getElementById('bet').value;
+
+        console.log(bet);
+        if (round == 0) {
+
+            round = 30;
+            jackpot = get_jackpot();
+
+    
+        }
+
+        console.log(round);
+        console.log(jackpot);
+
+
+        
+        let r1;
+        let r2;
+        let r3;
+
+
+        
+
+        if (round == jackpot) {
+            r1 = 5;
+            r2 = r1 + 10;
+            r3 = r2 + 5;
+
+            
+        }
+        else if (bet > 1000) {
+            x = jackpot_var();
+            console.log(x);
+            if (bet > 5000) {
+                randnum = Math.random() < 0.7;
+                console.log(randnum)
+                if (randnum) {
+                    r1 = x[0];
+                    r2 = r1 + x[1];
+                    r3 = r2 + x[2];
+
+                }
+                else {
+                    r1 = Math.floor(Math.random() * 20);
+                    r2 = r1 + Math.floor(Math.random() * 5);
+                    r3 = r2 + Math.floor(Math.random() * 10);
+                }
+            }
+
+            else if (bet > 3000) {
+                randnum = Math.random() < 0.6;
+                console.log(randnum)
+                if (randnum) {
+                    r1 = 0;
+                    r2 = r1 + 4;
+                    r3 = r2 + 0;
+
+                }
+                else {
+                    r1 = Math.floor(Math.random() * 20);
+                    r2 = r1 + Math.floor(Math.random() * 5);
+                    r3 = r2 + Math.floor(Math.random() * 10);
+                }
+            }
+
+            else if (bet > 1000) {
+                randnum = Math.random() < 0.5;
+                console.log(randnum)
+                if (randnum) {
+                    r1 = 5;
+                    r2 = r1 + 10;
+                    r3 = r2 + 5;
+
+                }
+                else {
+                    r1 = Math.floor(Math.random() * 20);
+                    r2 = r1 + Math.floor(Math.random() * 5);
+                    r3 = r2 + Math.floor(Math.random() * 10);
+                }
+            }
+        }
+
+        else {
+            r1 = Math.floor(Math.random() * 20);
+            r2 = r1 + Math.floor(Math.random() * 5);
+            r3 = r2 + Math.floor(Math.random() * 10);
+        }
+        let t = Math.floor(Math.random() * 50) + 100;
+        
+        slot1(t,r1);
+        slot2(t,r2);
+        slot3(t,r3);
+
+        round -= 1;
+        
+        
+    }
+
+    const sleep = (time) => {
+    return new Promise((resolve) => setTimeout(resolve, time))
+  }
+  
+  const slot1 = async (t,r) => {
+    
+    let j = 0;
+    for (let i = 0; i <= r; i++) {
+      await sleep(t)
+        if(i < icon.length) {
+            spin[0].play();
+            document.getElementById("i-one").innerHTML = icon[i];
+    }
+        else {
+            if(j == icon.length) {
+                j = 0;
+            } 
+            spin[0].play();              
+            document.getElementById("i-one").innerHTML = icon[j];
+            j++;
+            }
+
+    }
+  }
+
+  const slot2 = async (t,r) => {
+
+    let j = 0;
+    for (let i = 0; i <= r; i++) {
+      await sleep(t)
+        if(i < icon.length) {
+            spin[1].play();   
+            document.getElementById("i-two").innerHTML = icon[i];
+    }
+        else {
+            if(j == icon.length) {
+                j = 0;
+            }  
+            spin[1].play();                
+            document.getElementById("i-two").innerHTML = icon[j];
+            j++;
+            }
+
+    }
+  }
+
+  const slot3 = async (t,r) => {
+    
+    let j = 0;
+    for (let i = 0; i <= r; i++) {
+      await sleep(t)
+        if(i < icon.length) {
+            spin[2].play();   
+            document.getElementById("i-three").innerHTML = icon[i];
+    }
+        else {
+            if(j == icon.length) {
+                j = 0;
+            } 
+            spin[2].play();                 
+            document.getElementById("i-three").innerHTML = icon[j];
+            j++;
+            }
+
+    }
+  }
+  function toggleAudio(){
+		for (var x of spin){
+			x.volume = 0.4;
+		}
+		for (var x of coin){
+			x.volume = 0.4;
+		}
+
+
+  }
+
+
+
+
+</script>
+</html>
